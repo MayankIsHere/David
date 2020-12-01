@@ -1,0 +1,797 @@
+from __future__ import unicode_literals
+try: # Imports
+    import pyttsx3 #Padhwata hai 
+    import os # koi file open karna(with the help of this module we provide a location of that particular file)
+    import random
+    import datetime
+    import speech_recognition as sr #pip install speechrecognition
+    from wikipedia import wikipedia
+    import webbrowser # to open online link
+    import time
+    import pyautogui
+    import keyboard
+    from pynput.keyboard import Listener
+    from subprocess import check_call
+    import pyperclip
+    from plyer import  notification
+    import youtube_dl
+    import urllib
+    import shutil
+except Exception as e:
+    print(e)
+
+engine = pyttsx3.init("sapi5")
+voices = engine.getProperty("voices")
+engine.setProperty("voice", voices[0].id)
+engine. setProperty("rate", 190.7)
+
+def speak(var):  # Speak Function will use to take the output in Voice
+    engine.say(var)
+    engine.runAndWait()
+
+def NotifyMe(title, message):
+    notification.notify(
+        title = title, 
+        message = message,
+        app_icon = None,
+        timeout = 10        
+
+    )
+
+def wishme():  # It Wish Me By RealTime and give the first introduction
+    hour = int(datetime.datetime.now().hour)
+
+    if hour >= 0 and hour < 12:
+        speak("Good Morning!")
+    elif hour >= 12 and hour < 16:
+        speak("Good AfterNoon!")
+    elif hour >= 16:
+        speak("Good Evening!")
+    speak("IAM ,HERE ,U ,CAN ,GIVE ,ME ,COMMAND")
+
+def AskTime():  # it tell me time 
+    hour = int(datetime.datetime.now().hour)
+    if hour<=12:
+        speak(hour)
+        speak("am")
+    else :
+        speak(hour-12)
+        speak("pm")
+    minute = str(datetime.datetime.now().minute)
+    speak("and")
+    speak(minute)
+    speak("minutes")
+    
+def TakeCommandVoice():  # It Takes Voice Input From User and Give outPut in string
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+
+        print("Listening....")
+        r.pause_threshold = 1
+        r.energy_threshold = 2200
+        audio_data = r.listen(source)  # listen for the first phrase and extract it into audio data##    print("recognising")  # recognize speech using CMUsphinx Speech Recognition - OFFLINE                           # speech is unintelligible
+        print("Recognizing...")
+    try:
+        queryy = (r.recognize_google(audio_data)).lower()
+        print(f"\n                                                      {queryy}\n")
+        global query1
+        query1 = queryy
+    except Exception as e:
+        pass
+    if "exit" in query1:
+        mode = "none"
+
+def TakeCommandTyping(): # It Takes Input in Words/Typing/ (offline)
+    while True:
+        global query1
+        query1 = input("Type Here : ")
+        if query1 != "exit":
+            return False
+        if query1 == "exit":
+            global mode
+            mode = "none"
+            break
+
+
+class KeyboardClass(): # A group or class to Press/LongPress/Release-after-LongPress
+    def Press(button):
+        pyautogui.press(button)
+
+    def LongPress(button):
+        pyautogui.keyDown(button)
+
+    def Release(button):
+        pyautogui.keyUp(button)
+
+def YtSearch(var): # Search in Youtube
+    search = var.replace(" ","+")
+    webbrowser.open(f"https://www.youtube.com/results?search_query={search}")
+
+def AmazonSearch(var):# Search in Amazon
+    search = var.replace(" ","+")
+    webbrowser.open(f"https://www.amazon.in/realme-c2/s?k={search}")
+
+def GoogleSearch(var):# Search in Google
+    search = var.replace(" ","+")
+    webbrowser.open(f"https://www.google.com/search?q={search}&oq={search}+&aqs=chrome..69i57j0i457j0l3j69i60l3.7480j0j4&sourceid=chrome&ie=UTF-8")
+
+def FlipkartSearch(var): # Search in Flipkart: 
+    var = var.split()
+    webbrowser.open(f"https://www.flipkart.com/search?q={var[0]}%20{var[1]}&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off")
+
+# Dont touch, it Works
+
+
+def CopyToClip(sentence):
+    cmd='echo '+sentence.strip()+'|clip'
+    return check_call(cmd, shell=True)
+
+def WriteCode(mes):
+    code =""
+    for x in mes:
+        if x=="a":
+        	code+="p"
+        if x=="b":
+        	code+="o"
+        if x=="c":
+        	code+="a"
+        if x=="d":
+        	code+="q"
+        if x=="e":
+        	code+="n"
+        if x=="f":
+        	code+="b"
+        if x=="g":
+        	code+="r"
+        if x=="h":
+        	code+="s"
+        if x=="i":
+        	code+="c"
+        if x=="j":
+        	code+="t"
+        if x=="k":
+        	code+="d"
+        if x=="l":
+        	code+="u"
+        if x=="m":
+        	code+="h"
+        if x=="n":
+        	code+="m"
+        if x=="o":
+        	code+="e"
+        if x=="p":
+        	code+="k"
+        if x=="q":
+        	code+="v"
+        if x=="r":
+        	code+="f"
+        if x=="s":
+        	code+="w"
+        if x=="t":
+        	code+="j"
+        if x=="u":
+        	code+="x"
+        if x=="v":
+        	code+="g"
+        if x=="w":
+        	code+="y"
+        if x=="x":
+        	code+="z"
+        if x=="y":
+        	code+="l"
+
+        if x=="1":
+        	code+="×"
+        if x=="2":
+        	code+="*"
+        if x=="3":
+        	code+="+"
+        if x=="4":
+        	code+="-"
+        if x=="5":
+        	code+="%"
+        if x=="6":
+        	code+="["
+        if x=="7":
+        	code+="]"
+        if x=="8":
+        	code+="("
+        if x=="9":
+        	code+=")"
+        if x=="0":
+        	code+="{"
+        if x==" ":
+        	code+="."
+
+    CopyToClip(code)    
+    NotifyMe("CodeIt", "Phrase hass been cooded")  
+    
+def CodeToDecode(mes):
+    code = ""
+    for y in mes:
+	    if y=="p":
+	    	code+="a"
+	    if y=="o":
+	    	code+="b"
+	    if y=="a":
+	    	code+="c"
+	    if y=="q":
+	    	code+="d"
+	    if y=="n":
+	    	code+="e"
+	    if y=="b":
+	    	code+="f"
+	    if y=="r" :
+	    	code+="g"
+	    if y=="s":
+	    	code+="h"
+	    if y=="i":
+	    	code+="j"
+	    if y=="c":
+	    	code+="i"
+	    if y=="t":
+	    	code+="j"
+	    if y=="d":
+	    	code+="k"
+	    if y=="u":
+	    	code+="l"
+	    if y=="h":
+	    	code+="m"
+	    if y=="m":
+	    	code+="n"
+	    if y=="e":
+	    	code+="o"
+	    if y=="k":
+	    	code+="p"
+	    if y=="v":
+	    	code+="q"
+	    if y=="f":
+	    	code+="r"
+	    if y=="w":
+	    	code+="s"
+	    if y=="j":
+	    	code+="t"
+	    if y=="x":
+	    	code+="u"
+	    if y=="g":
+	    	code+="v"
+	    if y=="y":
+	    	code+="w"
+	    if y=="z":
+	    	code+="x"
+	    if y=="l":
+	    	code+="y"
+	    if y=="i":
+	    	code+="z"
+    
+    
+    
+    
+    
+    
+	    if y=="×":
+	    	code+="1"
+	    if y=="*":
+	    	code+="2"
+	    if y=="+":
+	    	code+="3"
+	    if y=="-":
+	    	code+="4"
+	    if y=="%":
+	    	code+="5"
+	    if y=="[":
+	    	code+="6"
+	    if y=="]":
+	    	code+="7"
+	    if y=="(":
+	    	code+="8"
+	    if y==")":
+	    	code+="9"
+	    if y=="{":
+	    	code+="0"
+	    if y==".":
+	    	code+=" "
+    
+    print(code)
+    NotifyMe("CodeIt",f"Yore Code is : {code}")
+			
+			
+def on_press(key): # It is Background Mode Function different from other function (line no.328)
+			
+
+			
+
+    keydata = str(key)
+    
+    with open ("background_cache.txt", "a") as f:
+        f.write(keydata)
+    
+    r = open("background_cache.txt", "r")
+
+    WtToDo = r.read()
+    WtToDo = WtToDo.replace("\'","")
+    WtToDo = WtToDo.lower()
+
+    if "dgoogle" in WtToDo:
+        webbrowser.open("www.google.com")
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+    
+    if "dyoutube" in WtToDo:
+        webbrowser.open("www.youtube.com")
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+    
+    if "dyt" in WtToDo:
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        try:
+            NotifyMe("Youtube Video Downloader", "Your Video is Downloading..")
+            ydl_opts = {}
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([pyperclip.paste()])
+        except Exception as e:
+            NotifyMe("Youtube Video Downloader", "There is some error, try with another link")
+            
+
+    
+    if "dmute" in WtToDo:
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        pyautogui.press("volumemute")
+
+    if ("dup" in WtToDo) or ("key.ctrl_ri" in WtToDo)  or ("key.ctrl_li" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        pyautogui.press("volumeup")
+
+    if "ddown" in WtToDo  or ("key.ctrl_rde" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        pyautogui.press("volumedown")
+    
+    if ("dchill" in WtToDo) or ("dsong" in WtToDo) or ("dsongs" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\chill\chill")
+    
+    if ("dcs" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\# C Science")
+    
+    if ("david" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\Best Programs\Assistant\jarvis")
+    
+    if ("dmovie" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\CHILL\MOVIES")
+    
+    if ("demiway" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\CHILL\EMIWAY_ BANTAI")
+    
+    if ("derive" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\\")
+    
+    if ("demiway" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\CHILL\EMIWAY_ BANTAI")
+    
+    if ("demiway" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile("E:\CHILL\EMIWAY_ BANTAI")
+    
+
+    
+    if (("dcode" in WtToDo) and ("key.enter" in WtToDo)) or (("key.ctrl_lc" in WtToDo) and ("key.enter" in WtToDo)) or (("key.ctrl_rc" in WtToDo) and ("key.enter" in WtToDo)):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        WtToDo = WtToDo.replace("dcode","")
+        WtToDo = WtToDo.replace("key.enter","")
+        WtToDo = WtToDo.replace("key.space"," ")
+        try:
+            WtToDo = WtToDo.replace("key.ctrl_rc","")
+            WtToDo = WtToDo.replace("key.ctrl_lc","")
+            WtToDo = WtToDo.replace("key."," ")
+            WtToDo = WtToDo.replace("ctrl_r","")
+            WtToDo = WtToDo.replace("ctrl_l","")
+            WtToDo = WtToDo.replace("tab","")
+            WtToDo = WtToDo.replace("caps_lock","")
+            WtToDo = WtToDo.replace("alt_gr","")
+            WtToDo = WtToDo.replace("pgup","")
+            WtToDo = WtToDo.replace("shifth","")
+            WtToDo = WtToDo.replace("alt_gr","")
+        except Exception as e:
+            pass
+        WriteCode(WtToDo)
+        print("Coding Completed")
+
+    if (("key.ctrl_rcpaste" == WtToDo)):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        WtToDo = pyperclip.paste()
+        WriteCode(WtToDo)
+    
+    if (("dnote" in WtToDo)and("key.enter" in WtToDo)):
+        try:
+            WtToDo = WtToDo.replace("key.enter","")
+            WtToDo = WtToDo.replace("key.space"," ")
+            WtToDo = WtToDo.replace("dnote","")
+            WtToDo = WtToDo.replace("key.ctrl_rc","")
+            WtToDo = WtToDo.replace("key.ctrl_lc","")
+            WtToDo = WtToDo.replace("key."," ")
+            WtToDo = WtToDo.replace("ctrl_r","")
+            WtToDo = WtToDo.replace("ctrl_l","")
+            WtToDo = WtToDo.replace("tab","")
+            WtToDo = WtToDo.replace("caps_lock","")
+            WtToDo = WtToDo.replace("alt_gr","")
+            WtToDo = WtToDo.replace("pgup","")
+            WtToDo = WtToDo.replace("shift","")
+            WtToDo = WtToDo.replace("alt_gr","")
+        except Exception as e:
+            pass
+        with open ("Notes.txt", "a") as n:
+            n.write(f"\n{WtToDo}")
+            
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+            
+    if (("ddecode" in WtToDo) and ("key.enter" in WtToDo)) or (("key.ctrl_ldc" in WtToDo) and ("key.enter" in WtToDo)) or (("key.ctrl_rdc" in WtToDo) and ("key.enter" in WtToDo)):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        WtToDo = pyperclip.paste()
+        CodeToDecode(WtToDo)
+
+    if ("dplaymusic" in WtToDo) or ("dmusic" in WtToDo) or ("key.ctrl_rm" in WtToDo) or ("key.ctrl_lm" in WtToDo):
+        with open ("background_cache.txt", "w") as f:
+            f.write("")
+        os.startfile(os.path.join("E:\\CHILL\\CHILL",(os.listdir("E:\\CHILL\\CHILL"))[random.randint(1, 68)]))
+  
+    if "exit" in WtToDo:
+        return False
+        
+    if "key.esc" in WtToDo:
+        # Stop listener
+        with open ("background_cache.txt", "w") as f:
+            f.write("")   
+        return False
+            
+    if "key.backspace" in WtToDo:
+        with open ("background_cache.txt", "w") as f:
+            f.write("")   
+            
+
+
+
+
+if __name__ == '__main__': #Commands Starts Here
+    wishme()
+    mode = "none"
+    while True:
+
+        # Some Global variables to do work in easier way
+        query1 = ".." 
+        print("\n")
+        i = 0
+        if mode == "none": # For (Looping NoneMode / EnvironmentChooseMode)
+            while True: #Keyboard Mode or Voice Mode or Background Mode
+                if i ==0:
+                    # speak("Select in Typing, voice, or background command")
+                    pass
+                if keyboard.is_pressed("ctrl+v"):
+                    mode = "voice"
+                    break
+                
+                if keyboard.is_pressed("ctrl+t"):
+                    # global mode
+                    mode = "typing"
+                    break
+                    
+
+                
+                if keyboard.is_pressed("ctrl+b"):
+                    try:
+                        os.remove("background_cache.txt")
+                    except Exception as e:
+                        pass
+                    speak("you are in background mode, sir")
+                    with Listener(on_press=on_press) as listener:
+                        listener.join()
+                    os.remove("background_cache.txt")
+
+                if i%5000 == 0:
+                    print("press shift/ctrl/home")
+                i +=1
+            
+        if mode == "typing": # For Looping Type Mode  
+            TakeCommandTyping()
+        
+        if mode == "voice": # For Looping Voice Mode 
+            keyboard.wait("ctrl")
+            TakeCommandVoice()
+
+        
+        if ("stop" in query1) or ("quit" in query1):
+            speak("OK we are going to exit")
+            break
+        if "wikipedia" in query1:
+
+            speak("Searching Wikipedia, Sir")
+            query1 = query1.replace("wikipedia", "")
+            results = wikipedia.summary(query1, sentences=2)
+            speak("According to Wikipedia")
+            print(results)
+            speak(results)
+        elif "open youtube" in query1:
+            speak("Opening Youtube Sir")
+            webbrowser.open("www.youtube.com")
+        elif "open google" == query1:
+            speak("Opening Google sir")
+            webbrowser.open("www.google.com")
+        elif "stack" in query1:
+            speak("Opening Stack Overflow Sir")
+            webbrowser.open("www.stackoverflow.com")
+        elif "boot" in query1:
+            speak("Opening Bootstrap.com Sir")
+            webbrowser.open("www.getbootstrap.com")
+        elif "my web" in query1:
+            speak("Opening  your website sir....")
+            webbrowser.open("www.uddeshya.ezyro.com")
+        elif "open chrome" == query1:
+            speak("ok sir , opening chrome browser")
+            webbrowser.open("www.google.com")
+        elif ("play music" in query1) or ("random song" in query1):
+            speak("Wait sir Im handling it")
+            music_dir="E:\\CHILL\\CHILL"
+            song=os.listdir(music_dir)
+            random_song = random.randint(1, 68)
+            os.startfile(os.path.join(music_dir,song[random_song]))
+            time.sleep(6)
+        elif ("play song" in query1) or ("play a song" in query1) and ("search" not in query1):
+            speak("which song sir")
+            # TakeCommandVoice()
+            if mode == "voice":
+                TakeCommandVoice()
+            if mode == "typing":
+                TakeCommandTyping()
+            music_dir="E:\\CHILL\\CHILL"
+            songs=os.listdir(music_dir)
+            songNum = 0
+            finded = "no"
+            for line in songs:
+                line = line.replace('_','')
+                line = line.replace(' ','')
+                line = line.replace('-','')
+                query1 = query1.replace(' ','')
+                if query1 in line.lower():
+                    os.startfile(os.path.join(music_dir,songs[songNum]))
+                    speak('your song will be start soon..')
+                    finded = "yes"
+                    break
+                songNum += 1
+            if finded == "no":
+                speak("could not find")       
+        elif "ratan" in query1:
+            path="E:\\CHILL\\Python_Ratan_CompleteMaterial.pdf"
+            speak("Opening PDF of Ratan Sir, sir")
+            os.startfile(path)
+        elif "vs code" in query1:
+            Codepath="C:\\Users\\HP\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+            speak("Opening VS CODE , sir")
+            os.startfile(Codepath)       
+        elif(("change" in query1) and ("window" in query1)) or ( ("badlo" in query1) and ("window" in query1)):
+            KeyboardClass.LongPress("Alt")
+            KeyboardClass.Press("Tab")
+            KeyboardClass.Release("Alt")      
+        elif ("close" in query1) and ("window" in query1):
+            KeyboardClass.LongPress("Alt")
+            KeyboardClass.Press("f4")
+            KeyboardClass.Release("Alt")   
+        elif ("visit" in query1) and (("tech sagar" in query1) or ("technical sagar" in query1)):
+            speak("ok, i am doing it")
+            webbrowser.open("https://www.youtube.com/channel/UCCneap9DE1plCWwcObu-20Q")  
+        elif ("visit" in query1) and (("khan sir" in query1) or ("gs sir" in query1)):
+            speak("want to learn gs.")
+            webbrowser.open("https://www.youtube.com/channel/UCatL-c6pmnjzEOHSyjn-sHA")   
+        elif ("search" in query1) and ("youtube" in query1) and len(query1) > 1: #Search Youtube 
+            speak("searching sir")
+            query1 = query1.replace('search', '')
+            query1 = query1.replace('youtube', '')
+            query1 = query1.replace('in', '')
+            query1 = query1.replace('jarvis', '')
+            query1 = query1.replace('can we', '')
+            YtSearch(query1)                  
+        elif ("search" in query1) and (("chrome" in query1) or ("google" in query1)) and len(query1) > 1: #Search Youtube 
+            speak("finding sir")
+            query1 = query1.replace('search', '')
+            query1 = query1.replace('google', '')
+            query1 = query1.replace('in', '')
+            query1 = query1.replace('jarvis', '')
+            query1 = query1.replace('can we', '')
+            GoogleSearch(query1)                    
+        elif((query1.endswith("amazon"))):
+            speak("searching sir..")
+            try: 
+                query1 = query1.replace('search', '')
+                query1 = query1.replace('amazon', '')
+                query1 = query1.replace('in', '')
+                query1 = query1.replace('jarvis', '')
+                query1 = query1.replace('can we', '')
+            except Exception as e:
+                pass                  
+            AmazonSearch(query1)        
+        elif((query1.endswith("flipkart"))):
+            speak("opening and searching in flipkart sir")
+            try: 
+                query1 = query1.replace('search', '')
+                query1 = query1.replace('flipkart', '')
+                query1 = query1.replace('in', '')
+                query1 = query1.replace('jarvis', '')
+                query1 = query1.replace('can we', '')
+                query1 = query1.replace('canvas', '')
+            except Exception as e:
+                pass                  
+            FlipkartSearch(query1)           
+        elif "chill folder" in query1:
+            speak("opening chill folder") 
+            Codepath1="E:\CHILL"
+            speak("Opening the folder, sir")
+            os.startfile(Codepath1)
+        elif "what is time" in query1:
+            AskTime() 
+        elif "time" in query1:
+            AskTime()
+        elif "screenshot" in query1:
+            KeyboardClass.Press("PrtSc") 
+            speak("sceenshot has been taken sir..")
+        elif ("minimise" in query1) or ("minimizee" in query1):
+            
+            KeyboardClass.LongPress("Win")
+            KeyboardClass.Press("up")
+            KeyboardClass.Release("win")
+            pyautogui.click(1186, 36 , duration = 0.25)
+        elif "scroll up" in query1:
+            pyautogui.scroll(300)        
+        elif ("scroll down" in query1) or ("scroll" in query1):
+            pyautogui.scroll(-300) 
+        elif ("volume up" in query1) or ("increase volume" in query1) or (("increase" in query1)and("volume" in query1)and("increase" in query1)) or ("hitup" in query1):
+            speak("Increaseing volume sir.")
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup")      
+        elif (("increase" in query1)and("volume" in query1)and(("rapid" in query1)or("rapidly" in query1))):
+            speak("Increaseing volume sir.")
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+        elif ("volume down" in query1) or ("decrease volume" in query1) or (("decrease" in query1)and("volume" in query1)) or ("hit down" in query1):
+            speak("Decreasing volume sir.")
+            pyautogui.press("volumedown") 
+            pyautogui.press("volumedown") 
+            pyautogui.press("volumedown") 
+            pyautogui.press("volumedown")      
+        elif (("decrease" in query1)and("volume" in query1)and(("rapid" in query1)or("rapidly" in query1))):
+            speak("Decreasing volume sir.")
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup") 
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+            pyautogui.press("volumeup")
+        elif ("mute" in query1):
+            pyautogui.press("volumemute") 
+
+        elif "code my words" == query1:
+            speak("Tell the sentence sir sir")
+            if mode == "voice":
+                TakeCommandVoice()
+            if mode == "typing":
+                TakeCommandTyping()
+            WriteCode(query1)
+        
+        elif "decode my words" == query1:
+            speak("tell me after copy, just type, d")
+            keyboard.wait("d")
+            query1 = pyperclip.paste()
+            CodeToDecode(query1)
+    
+                
+    
+#Convertation starts here...
+
+
+        elif "who is your father" in query1:
+            speak("technically , i am created by ,anshuman and mayank, so i can say that ,,they are my creators ,,but not father ")        
+        elif "where do you live" in query1:
+            speak("i live in ,your laptop. Lol ")
+        elif "who is your mother" in query1:
+            speak("necessity..")
+        elif "who is your friend" in query1:
+            speak("you are my friend")
+        elif "will you talk to me" in query1:
+            speak("yeah. why not")
+        elif "what do you like" in query1:
+            speak("i like to help everyone")
+        elif "you be my friend" in query1:
+            speak("yeah. i will.")
+        elif "what do you eat" in query1:
+            speak("a good joke. but i consume electricity")
+        elif "will you help" in query1:
+            speak("i like to help everyone")
+        elif "what can you do" in query1:
+            speak("i can play music. i talk to you. i can do so many things. give me command only")
+        elif ("what is your name")in query1:
+            speak("my developers call me david")
+        elif "am i beautiful" in query1:
+            speak("i think you are too beautiful ,and smart")
+        elif "what is your education" in query1:
+            speak("what do you mean by education. degree or knowledge,if you mean knowledge then i am smarter than you . and if ypu are talking about degree then you are not so smart")
+        elif "hai" == query1:
+            speak("Hello,Dear.!")
+        elif "hai david" == query1:
+            speak("hello. dear")
+        elif "hello"== query1:
+            speak("i like to help everyone")
+        elif "idiot" in query1:
+            speak("hey!, mind your language")
+        elif "stupid" in query1:
+            speak("hey!, mind your language")
+        elif "duffer" in query1:
+            speak("hey!, mind your language")
+        elif "you are great" in query1:
+            speak("thank you ,dear")
+        elif "favourite game" in query1:
+            speak("cricket is my favourite game")
+        elif "favourite food" in query1:
+            speak("momos is my favourite food")
+        elif "favourite singer" in query1:
+            speak("Emiway is my favourite singer")
+        elif "tell me a joke" in query1:
+            speak("modi is intelligent man")
+        elif "tell a joke" in query1:
+            speak("rahul gandhi is too intelligent")
+        elif "who are you" in query1:
+            speak("i am david")
+        elif "address" in query1:
+            speak("laptop c drive")
+        elif "give me a glass of water" in query1:
+            speak("go and take the water .i am assistant not servent")
+        elif "give me food" in query1:
+            speak("was that a joke..not funny really")
+        elif "what is my name" in query1:
+            speak(" i do not know")
+        elif "what do you think" in query1:
+            speak("i think i can help you")
+        elif "can you eat" in query1:
+            speak("no i can't ")
+        elif "can you drink water" in query1:
+            speak("no,i can't")
+        elif "who created you" in query1:
+            speak("i am created by two brothers named . anshuman and mayank")
+        elif "who is your owner" in query1:
+            speak("i am created by two brothers named . anshuman and mayank")
+        elif "know me" in query1:
+            speak("are u president of india")
+        elif "nonsense" in query1:
+            speak("mind your language")
+        
+
